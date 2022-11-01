@@ -1,23 +1,12 @@
 const express = require('express');
-const faker = require('faker');
+const ProductsService = require('../services/products.service');
 
 const router = express.Router();
 
-router.get('/', (request, response) => {
-  const { size } = request.query;
-  const limit = size || 10;
-  const products = [];
-  for (let index = 0; index < limit; index++) {
-    products.push(
-      {
-        name: faker.commerce.productName(),
-        price: parseInt(faker.commerce.price(), 10),
-        image: faker.image.imageUrl(),
-      }
-    )
+const service = new ProductsService();
 
-  }
-  response.json(products)
+router.get('/', async (request, response) => {
+  response.json(await service.find())
 })
 
 // Todo lo que sea especifico debe ir antes de lo dinamico
@@ -25,15 +14,58 @@ router.get('/filter', (request, response) => {
   response.send('Yo soy un filter')
 })
 
-router.get('/:id', (request, response) => {
+router.get('/:id', async (request, response) => {
   const { id } = request.params;
-  response.json(
-    {
-      id,
-      name: 'Galleta',
-      precio: '5$',
-    })
+  const product = await service.findOne(id);
+  product ? response.status(200).json(product) : response.status(404).json({
+    message: 'El producto no existe'
+  })
 })
 
+
+router.delete('/:id', async (request, response) => {
+  const { id } = request.params;
+  const product = await service.delete(id);
+
+  product ? response.status(200).json(
+    {
+      message: 'Producto eliminado',
+      id,
+      data: product
+    }) :
+    response.status(404).json({
+      message: 'El producto no existe'
+    });
+})
+
+
+
+router.post('/', async (request, response) => {
+  const body = request.body;
+  const insert = await service.create(body);
+  insert ?
+  response.status(201).json({
+    message: 'producto creado',
+    code: insert
+  }) :
+  response.status(404).json({
+    message: 'El producto ya existe'
+  });
+})
+
+router.patch('/:id', async (request, response) => {
+  const { id } = request.params;
+  const body = request.body;
+  const product = await service.update(id, body);
+  product ?
+    response.status(200).json({
+      message: 'producto actualizado',
+      id,
+      data: product
+    }) :
+    response.status(404).json({
+      message: 'El producto no existe'
+    });
+})
 
 module.exports = router;
