@@ -55,3 +55,15 @@ Dependiendo del diseño que se desea adoptar, una URL se compone de lo siguiente
   * Recurso - (Opcional) Modelo de información
   * Parámetro - (Opcional) Selección índice o pivote
   * Query - (Opcional) Solicitud iterativo
+
+
+## Middleware 
+Es software que permite uno o más tipos de comunicación o conectividad entre dos o más aplicaciones o componentes de aplicaciones en una red distribuida. Al facilitar la conexión de aplicaciones que no fueron diseñadas para conectarse entre sí, y al brindar funcionalidad para conectarlas de manera inteligente, el middleware agiliza el desarrollo de aplicaciones y acelera el tiempo de comercialización.
+
+https://platzi.com/clases/2485-backend-nodejs/41762-middlewares-populares-en-expressjs/
+
+## Posibles errores
+```
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+```
+Puede ser debido a que se esta ejecutando algo despues de enviar la respuesta al cliente.
