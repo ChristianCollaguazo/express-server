@@ -97,3 +97,20 @@ libs - directorio de drivers connection
 ## Pool de conexiones
 Un pool de conexiones es un conjunto limitado de conexiones a una base de datos, que es manejado por un servidor de aplicaciones de forma tal, que dichas conexiones pueden ser reutilizadas por los diferentes usuarios.
 ![alt text](https://i.stack.imgur.com/OOFTe.png)
+
+## ORM
+💡Un ORM es un modelo de programación que permite mapear las estructuras de una base de datos relacionales.
+
+Al abstraer este tipo de programación, delegamos su implementación al backend, es decir, le añadimos una de responsabilidad a la capa transaccional del servidor:
+
+✨Los beneficios son los siguientes:
+
+* Acciones como CRUD (Create, Read, Update, Delete) son administradas mediante ORM.
+* La implementación de seeds o semillas, nos permiten recuperar, mediante código, la estructura de una BD.
+
+Una de las bases teóricas para entender este modelo es mediante el conocimiento de DAO (Data Access Object) y DTO (Data Transfer Object), los cuales nos permiten desestructurar un ORM en módulos de abstracción para acceder a la DB y transferir datos desde la misma DB, respectivamente hablando.
+
+🙃Los contras sería:
+
+* Delegación de responsabilidades al server
+* Descentralización de trabajo, directa, de una BD.
