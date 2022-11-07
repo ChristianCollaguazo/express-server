@@ -5,7 +5,7 @@ const {models} = require('../libs/sequelize');
 class ProductsService {
   constructor() {
     this.products = [];
-    this.generate();
+    // this.generate();
   }
 
   generate() {
@@ -13,11 +13,12 @@ class ProductsService {
     for (let index = 0; index < limit; index++) {
       this.products.push(
         {
-          id: index.toString(),
+
           name: faker.commerce.productName(),
           price: parseInt(faker.commerce.price(), 10),
-          image: faker.image.imageUrl(),
-          isBlock: faker.datatype.boolean()
+          url: faker.image.imageUrl(),
+          isBlock: faker.datatype.boolean(),
+          create_at: new Date()
         }
       )
     }
@@ -27,9 +28,12 @@ class ProductsService {
     //   return this.products.push(data);
     // }
     // throw boom.notFound('The product already exists');
+    //* Crear un solo producto
     data['createdAt'] = new Date();
     const newProduct = await models.Product.create(data);
     return newProduct;
+    //* Crear varios productos
+    //* return await models.Product.bulkCreate(this.products)
 
   }
 
@@ -49,7 +53,7 @@ class ProductsService {
   }
 
   async findOne(id) {
-    const product = this.products.find(product => product.id === id);
+    const product = await models.Product.findByPk(id);
     if(!product) {
       throw boom.notFound('The product not found');
     } else if(product.isBlock) {
@@ -63,18 +67,17 @@ class ProductsService {
    }
 
   async update(id, data) {
-    let index = this.findIndex(id);
-    if(index && index > -1) {
-      this.products[index] = {...this.products[index], ...data}
-      return this.products[index];
+    const product = await models.Product.findByPk(id);
+    if(product) {
+      return await product.update(data);
     }
     throw boom.notFound('The product not found');
   }
 
   async delete(id) {
-    let index = this.findIndex(id);
-    if(index && index > -1) {
-      return this.products.splice(index, 1);
+    const product = await models.Product.findByPk(id);
+    if(product){
+      return product.destroy();
     }
     throw boom.notFound('The product not found');
   }

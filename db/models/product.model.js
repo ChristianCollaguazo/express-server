@@ -23,9 +23,8 @@ const ProductSchema = {
   },
   isBlock: {
     allowNull: false,
-    type: DataTypes.STRING,
+    type: DataTypes.BOOLEAN,
     field: 'is_block',
-    defaultValue: Sequelize.NOW,
   },
   createdAt: {
     allowNull: false,
