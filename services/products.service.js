@@ -23,7 +23,6 @@ class ProductsService {
   }
   async create(data) {
     //* Crear un solo producto
-    data['createdAt'] = new Date();
     const newProduct = await models.Product.create(data);
     return newProduct;
     //* Crear varios productos
@@ -63,6 +62,7 @@ class ProductsService {
   async update(id, data) {
     const product = await models.Product.findByPk(id);
     if(product) {
+      data['modifiedAt'] = new Date();
       return await product.update(data);
     }
     throw boom.notFound('The product not found');
